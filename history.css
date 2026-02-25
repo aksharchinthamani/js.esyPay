@@ -1,0 +1,54 @@
+.transaction-item {
+  background: #ffffff;
+  border-left: 4px solid #10b981;
+  padding: 1rem;
+  margin-bottom: 0.9rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  transition: transform 0.2s ease;
+}
+
+.transaction-item:hover {
+  transform: translateX(4px);
+}
+
+.item-id {
+  font-family: 'Courier New', monospace;
+  font-size: 0.82rem;
+  color: #6b7280;
+  margin-bottom: 0.3rem;
+}
+
+.item-amount {
+  color: #111827;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+/* === SMOOTH PAGE TRANSITIONS (View Transitions API) === */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.48s;
+  animation-timing-function: ease-in-out;
+}
+
+::view-transition-old(root) {
+  animation-name: page-out;
+}
+
+::view-transition-new(root) {
+  animation-name: page-in;
+}
+
+@keyframes page-out {
+  from { opacity: 1; transform: scale(1.00); }
+  to   { opacity: 0; transform: scale(0.96); }
+}
+
+@keyframes page-in {
+  from { opacity: 0; transform: scale(1.04); }
+  to   { opacity: 1; transform: scale(1.00); }
+}
