@@ -55,7 +55,7 @@ function loginpage(){
     let message = document.getElementById("clickError");
     let error = document.getElementById("Error");
 
-
+    if (button) {
     button.addEventListener("click", () => {
       
       let email = document.getElementById("userEmail");
@@ -88,6 +88,7 @@ function loginpage(){
         
       
       });
+    }
     
 
   
