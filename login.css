@@ -1,149 +1,191 @@
-* { margin:0; padding:0; box-sizing:border-box; }
-
-body {
-  font-family: 'Inter', system-ui, sans-serif;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 1rem;
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
 
-.login-card {
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px -8px rgba(79,70,229,0.15);
-  border: 1px solid #e2e8f0;
-  width: 100%;
-  max-width: 400px;
-  padding: 1.6rem 1.4rem;
-  transition: transform 0.24s ease;
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:1rem;
+
+  /* Animated gradient background */
+  background:linear-gradient(-45deg,#6366f1,#7c3aed,#06b6d4,#10b981);
+  background-size:400% 400%;
+  animation:bgMove 12s ease infinite;
 }
 
-.login-card:hover {
-  transform: translateY(-3px);
+@keyframes bgMove{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
 }
 
-.card-header-custom {
-  text-align: center;
-  margin-bottom: 1.4rem;
+/* LOGIN CARD */
+
+.login-card{
+  backdrop-filter:blur(20px);
+  background:rgba(255,255,255,0.9);
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,0.3);
+
+  box-shadow:
+  0 10px 40px rgba(0,0,0,0.15),
+  0 0 20px rgba(99,102,241,0.15);
+
+  width:100%;
+  max-width:420px;
+  padding:2rem 1.6rem;
+
+  transition:all .35s ease;
 }
 
-.card-header-custom h2 {
-  font-size: 1.9rem;
-  font-weight: 700;
-  color: #0f172a;
+.login-card:hover{
+  transform:translateY(-6px) scale(1.01);
+  box-shadow:
+  0 18px 50px rgba(0,0,0,0.25),
+  0 0 25px rgba(99,102,241,0.25);
 }
 
-.card-header-custom p {
-  color: #64748b;
-  font-size: 0.92rem;
-  margin-top: 0.3rem;
+/* HEADER */
+
+.card-header-custom{
+  text-align:center;
+  margin-bottom:1.6rem;
 }
 
-.form-label {
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: #1e293b;
-  margin-bottom: 0.4rem;
-  display: block;
+.card-header-custom h2{
+  font-size:2rem;
+  font-weight:700;
+  color:#111827;
+  letter-spacing:.5px;
 }
 
-.form-control {
-  width: 100%;
-  padding: 0.78rem 1rem;
-  font-size: 0.97rem;
-  border: 1px solid #cbd5e1;
-  border-radius: 10px;
-  transition: all 0.2s;
+.card-header-custom p{
+  color:#6b7280;
+  font-size:.95rem;
+  margin-top:.3rem;
 }
 
-.form-control:focus {
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99,102,241,0.14);
-  outline: none;
+/* INPUTS */
+
+.form-label{
+  font-size:.85rem;
+  font-weight:600;
+  color:#374151;
+  margin-bottom:.35rem;
+  display:block;
 }
 
-.loginButton, .signinButton {
-  width: 100%;
-  padding: 0.92rem;
-  margin: 0.9rem 0 0.5rem;
-  font-size: 0.98rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 10px;
-  color: white;
-  cursor: pointer;
-  transition: all 0.24s ease;
-  position: relative;
-  overflow: hidden;
+.form-control{
+  width:100%;
+  padding:.85rem 1rem;
+  font-size:.96rem;
+  border-radius:10px;
+  border:1px solid #d1d5db;
+  background:white;
+
+  transition:all .25s ease;
 }
 
-.loginButton::before, .signinButton::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
-  transform: translateX(-100%);
-  transition: transform 0.6s;
+.form-control:focus{
+  border-color:#6366f1;
+  box-shadow:
+  0 0 0 3px rgba(99,102,241,.18),
+  0 5px 15px rgba(99,102,241,.1);
+
+  transform:scale(1.02);
+  outline:none;
 }
 
-.loginButton:hover::before, .signinButton:hover::before {
-  transform: translateX(100%);
+/* BUTTONS */
+
+.loginButton,.signinButton{
+  width:100%;
+  padding:.95rem;
+  margin:1rem 0 .5rem;
+  font-size:.97rem;
+  font-weight:600;
+  border:none;
+  border-radius:10px;
+  color:white;
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+
+  transition:all .3s ease;
 }
 
-.loginButton:hover, .signinButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px -6px rgba(99,102,241,0.3);
+/* glow effect */
+
+.loginButton{
+  background:linear-gradient(135deg,#6366f1,#7c3aed);
+  box-shadow:0 8px 18px rgba(99,102,241,.35);
 }
 
-.signinButton {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+.signinButton{
+  background:linear-gradient(135deg,#10b981,#059669);
+  box-shadow:0 8px 18px rgba(16,185,129,.35);
 }
 
-.loginButton {
-  background: linear-gradient(135deg, #6366f1 0%, #7c3aed 100%);
+.loginButton:hover,
+.signinButton:hover{
+  transform:translateY(-3px) scale(1.02);
+  box-shadow:0 12px 28px rgba(0,0,0,.25);
 }
 
-.error-text {
-  color: #ef4444;
-  font-size: 0.88rem;
-  text-align: center;
-  margin-top: 0.8rem;
-  min-height: 1.2rem;
+/* shine animation */
+
+.loginButton::before,
+.signinButton::before{
+  content:'';
+  position:absolute;
+  top:0;
+  left:-100%;
+  width:100%;
+  height:100%;
+  background:linear-gradient(
+  120deg,
+  transparent,
+  rgba(255,255,255,.4),
+  transparent
+  );
 }
 
-@media (max-width: 480px) {
-  .login-card {
-    padding: 1.4rem 1.2rem;
+.loginButton:hover::before,
+.signinButton:hover::before{
+  animation:shine 1.2s;
+}
+
+@keyframes shine{
+  100%{
+    left:120%;
   }
 }
-/* === SMOOTH PAGE TRANSITIONS (View Transitions API) === */
-@view-transition {
-  navigation: auto;
+
+/* ERROR */
+
+.error-text{
+  color:#ef4444;
+  font-size:.88rem;
+  text-align:center;
+  margin-top:.7rem;
+  min-height:1.2rem;
 }
 
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation-duration: 0.48s;
-  animation-timing-function: ease-in-out;
+/* MOBILE */
+
+@media(max-width:480px){
+
+.login-card{
+  padding:1.7rem 1.3rem;
 }
 
-::view-transition-old(root) {
-  animation-name: page-out;
+.card-header-custom h2{
+  font-size:1.7rem;
 }
 
-::view-transition-new(root) {
-  animation-name: page-in;
-}
-
-@keyframes page-out {
-  from { opacity: 1; transform: scale(1.00); }
-  to   { opacity: 0; transform: scale(0.96); }
-}
-
-@keyframes page-in {
-  from { opacity: 0; transform: scale(1.04); }
-  to   { opacity: 1; transform: scale(1.00); }
 }

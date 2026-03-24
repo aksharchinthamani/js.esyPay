@@ -12,6 +12,36 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+<div id="splash" style="position: fixed;inset: 0;background: linear-gradient(-45deg, #6366f1, #7c3aed, #06b6d4, #10b981);background-size: 400% 400%;animation: bgMove 12s ease infinite;display: flex;flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  z-index: 9999;
+  transition: opacity 0.9s ease-out;
+  opacity: 1;
+">     
+  <div style="
+    font-size: 5.5rem;
+    font-weight: 800;
+    letter-spacing: -2px;
+    text-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    view-transition-name: esypay-title;
+  ">esyPay</div>
+  <div style="margin-top:1rem; font-size:1.3rem; opacity:0.9;">
+    Convert • Pay • Instantly
+  </div>
+</div>
+
+<script>
+setTimeout(() => {
+  const splash = document.getElementById('splash');
+  splash.style.opacity = '0';
+  
+  setTimeout(() => {
+    splash.style.display = 'none';
+  }, 950);   
+}, 1400);    
+</script>
   <div class="container d-flex justify-content-center align-items-center vh-100">
     <div class="login-card">
       <div class="card-header-custom text-center">
@@ -32,8 +62,7 @@
         <button class="signinButton" onclick="signup()">Sign Up</button>
         <button class="loginButton" onclick="next()">next</button>
         <p class="text-center mt-2 mb-2">or</p>
-        <button class="loginButton" onclick="loginpage()">login</button>
-
+<button class="loginButton" onclick="navigateWithTransition('log.html')">Login</button>
         <p id="error" class="error-text text-center mt-3"></p>
       </div>
     </div>

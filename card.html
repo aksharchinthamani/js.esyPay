@@ -23,7 +23,10 @@
 
       <div class="mb-3">
         <label class="form-label" for="cardNumber">Card Number</label>
-        <input type="number" class="form-control" id="cardNumber" placeholder="1234 5678 9012 3456" required>
+        <div class="input-group position-relative">
+          <input type="text" class="form-control pe-5" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" inputmode="numeric" pattern="[0-9\s]*" required>
+          <span id="cardBrandIcon" class="position-absolute top-50 end-0 translate-middle-y pe-3 fs-4 fw-bold" style="color: #9ca3af;"></span>
+        </div>
       </div>
 
       <div class="mb-3">

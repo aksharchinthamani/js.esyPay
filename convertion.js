@@ -1,83 +1,126 @@
-const userInput      = document.getElementById("inrAmount");
-const resultOutput   = document.getElementById("billAmount");
-const exchangeButton = document.getElementById("convertButton");
-const payButton      = document.getElementById("payBtn");
-const dropD          = document.getElementById("selectDropdown");
-const denomination   = document.getElementById("denomination");
+const elements = {
+    inrInput:       document.getElementById("inrAmount"),
+    resultOutput:   document.getElementById("billAmount"),
+    convertBtn:     document.getElementById("convertButton"),
+    payBtn:         document.getElementById("payBtn"),
+    currencySelect: document.getElementById("selectDropdown"),
+    denomination:   document.getElementById("denomination"),
+    clearBtn:       document.getElementById("clearAmount")
+};
 
-payButton.disabled = true;
+elements.payBtn.disabled = true;
 
-exchangeButton.onclick = () => {
-    const amountInr = parseFloat(userInput.value);
-    const selectedCurrency = dropD.value;
+let debounceTimer;
+elements.inrInput.addEventListener('input', () => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+        const amountStr = elements.inrInput.value.trim();
+        const selected = elements.currencySelect.value;
+        if (amountStr && !isNaN(amountStr) && parseFloat(amountStr) > 0 && selected) {
+            elements.convertBtn.click();
+        }
+    }, 650);
+});
 
-    if (!amountInr || amountInr <= 0 || !selectedCurrency) {
+
+elements.clearBtn.addEventListener('click', () => {
+    elements.inrInput.value = "";
+    elements.resultOutput.value = "";
+    elements.denomination.innerText = "";
+    elements.payBtn.disabled = true;
+    elements.inrInput.focus();
+});
+
+
+elements.convertBtn.addEventListener('click', async () => {
+    const amountStr = elements.inrInput.value.trim();
+    const amountInr = parseFloat(amountStr);
+    const selectedCurrency = elements.currencySelect.value;
+
+    if (!amountStr || isNaN(amountInr) || amountInr <= 0 || !selectedCurrency) {
         alert("Please enter a valid amount in INR and select a currency.");
         return;
     }
 
-    const url = "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/inr.min.json";
+    elements.convertBtn.disabled = true;
+    const originalText = elements.convertBtn.innerHTML;
+    elements.convertBtn.innerHTML = `
+        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+        Converting...
+    `;
 
-    fetch(url)
-        .then(response => {
-            if (!response.ok) throw new Error("Network error");
-            return response.json();
-        })
-        .then(data => {
-            const rates = data.inr;
-            const rate = rates[selectedCurrency.toLowerCase()];
+    try {
+        const url = "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/inr.min.json";
+        const response = await fetch(url);
+        if (!response.ok) throw new Error("Network error");
 
-            if (!rate) {
-                alert(`Sorry, ${selectedCurrency} rate is not available right now.`);
-                return;
-            }
+        const data = await response.json();
+        const rates = data.inr;
+        const rate = rates[selectedCurrency.toLowerCase()];
 
-            const converted = amountInr * rate;
+        if (!rate) {
+            alert(`Sorry, ${selectedCurrency} rate is not available right now.`);
+            return;
+        }
 
-            resultOutput.value = converted.toFixed(2);
-            denomination.innerText = selectedCurrency;
+        const converted = amountInr * rate;
+        elements.resultOutput.value = converted.toFixed(2);
+        elements.denomination.innerText = selectedCurrency;
+        elements.payBtn.disabled = false;
 
-            payButton.disabled = false;
+        console.log(`Success: ${amountInr} INR ≈ ${converted.toFixed(2)} ${selectedCurrency}`);
+    } catch (err) {
+        console.error(err);
+        alert("Could not fetch exchange rates.\n Check your internet connection.");
+    } finally {
+        elements.convertBtn.disabled = false;
+        elements.convertBtn.innerHTML = originalText;
+    }
+});
 
-            console.log(`Success: ${amountInr} INR = ${converted.toFixed(2)} ${selectedCurrency}`);
-        })
-        .catch(err => {
-            console.error(err);
-            alert("Could not fetch exchange rates.\nCheck your internet connection and try again.");
-        });
-};
 
-function transverse() {
-    if (resultOutput.value && parseFloat(resultOutput.value) > 0) {
-        localStorage.setItem("amountToPay", resultOutput.value);
-        localStorage.setItem("currency", denomination.innerText);
+function proceedToPayment() {
+    if (elements.resultOutput.value && parseFloat(elements.resultOutput.value) > 0) {
+        localStorage.setItem("amountToPay", elements.resultOutput.value);
+        localStorage.setItem("currency", elements.denomination.innerText);
         navigateWithTransition("payment.html");
     } else {
         alert("Please convert an amount first!");
     }
 }
+function normalizeCardNumber(num) {
+    return (num || "").replace(/\D/g, "");
+}
 
 function pay() {
     const cardName   = document.getElementById("cardName")?.value.trim();
-    const cardNumber = document.getElementById("cardNumber")?.value.trim();
+    const cardNumberRaw = document.getElementById("cardNumber")?.value.trim();
     const cvv        = document.getElementById("cvv")?.value.trim();
+    const cardNumber = normalizeCardNumber(cardNumberRaw);
 
-    const savedCard  = JSON.parse(localStorage.getItem("cardDetails"));
-    const amount     = localStorage.getItem("amountToPay");
-    const currency   = localStorage.getItem("currency");
+    const amount   = localStorage.getItem("amountToPay");
+    const currency = localStorage.getItem("currency");
 
-    if (!savedCard) {
-        alert("No card details saved. Please save your card first.");
-        return;
-    }
     if (!cardName || !cardNumber || !cvv) {
         alert("Please fill all card details.");
         return;
     }
 
-    if (cardName === savedCard.cardName &&
-        cardNumber === savedCard.cardNumber &&
-        cvv === savedCard.cvv) {
+    if (!amount || !currency) {
+        alert("No payment amount found. Please convert an amount first.");
+        return;
+    }
+
+    const savedCard = JSON.parse(localStorage.getItem("cardDetails"));
+    if (!savedCard) {
+        localStorage.setItem("cardDetails", JSON.stringify({ cardName, cardNumber, cvv }));
+    }
+
+    const currentCard = JSON.parse(localStorage.getItem("cardDetails"));
+
+    if (cardName === currentCard.cardName &&
+        cardNumber === normalizeCardNumber(currentCard.cardNumber) &&
+        cvv === currentCard.cvv) {
 
         const loading = document.getElementById("loadingOverlay");
         if (loading) loading.style.display = "flex";
@@ -98,13 +141,11 @@ function pay() {
             localStorage.setItem("paymentHistory", JSON.stringify(history));
 
             if (loading) loading.style.display = "none";
-
             alert(`Payment Successful!\n\nID: ${txId}\nDate: ${date}`);
-
             setTimeout(() => navigateWithTransition("history.html"), 1000);
         }, 1000);
     } else {
-        alert("Invalid card details. Please try again.");
+        alert("Invalid card details. Please try again with the same saved card.");
     }
 }
 

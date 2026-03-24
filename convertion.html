@@ -25,9 +25,11 @@
                     <label for="inrAmount" class="form-label">Amount in INR</label>
                     <div class="input-group">
                         <span class="input-group-text">₹</span>
-                        <input type="number" id="inrAmount" class="form-control" placeholder="Enter INR Amount">
+                        <input type="text" id="inrAmount" class="form-control" placeholder="Enter INR Amount" inputmode="numeric">
+                        <button class="btn btn-outline-secondary" type="button" id="clearAmount">Clear</button>
                     </div>
                 </div>
+
                 <div class="mb-4">
                     <label for="selectDropdown" class="form-label">SELECT CURRENCY</label>
                     <select id="selectDropdown" class="form-control">
@@ -95,15 +97,16 @@
                     <label for="billAmount" class="form-label">Amount to pay</label>
                     <div class="input-group">
                         <span id="denomination" class="input-group-text"></span>
-                        <input type="text" id="billAmount" class="form-control" placeholder="Amount to pay" readonly>
+                        <span class="input-group-text bg-white border-end-0">≈</span>
+                        <input type="text" id="billAmount" class="form-control" placeholder="Converted Amount to pay" readonly>
                     </div>
                 </div>
 
-                <button id="payBtn" onclick="transverse()" class="paymentButton B-1" disabled>
-                      Proceed with Payment
+                <button id="payBtn" onclick="proceedToPayment()" class="paymentButton B-1" disabled>
+                    Proceed with Payment
                 </button>
                 <button class="paymentButton B-1" onclick="navigateWithTransition('history.html')" id="back">
-                  view transaction history
+                    view transaction history
                 </button> 
             </div>
         </div>

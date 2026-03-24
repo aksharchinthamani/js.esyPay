@@ -17,13 +17,26 @@
     <h2 class="text-center mb-4" style="view-transition-name: esypay-title;">Payment Via Card</h2>
     <form id="paymentForm">
       <div class="mb-3">
-        <label class="form-label" for="cardName">Card Holder Name</label>
-        <input type="text" id="cardName" class="form-control" placeholder="Enter name" required>
+        <label class="form-label" for="cardName">Cardholder Name</label>
+        <input type="text" class="form-control" id="cardName" placeholder="holder name" required>
       </div>
-
       <div class="mb-3">
-        <label class="form-label" for="number">Card Number</label>
-        <input type="number" class="form-control" id="cardNumber" placeholder="1234 5678 9012 3456" required>
+        <label class="form-label" for="cardNumber">Card Number</label>
+        <div class="input-group position-relative">
+          <input 
+              type="text" 
+              class="form-control pe-5" 
+              id="cardNumber" 
+              placeholder="1234 5678 9012 3456" 
+              maxlength="19"
+              inputmode="numeric"
+              pattern="[0-9\s]*"
+              required
+          >
+          <span id="cardBrandIcon" 
+                class="position-absolute top-50 end-0 translate-middle-y pe-3 fs-4 fw-bold"
+                style="color: #9ca3af;"></span>
+        </div>
       </div>
 
       <div class="mb-3">
@@ -31,13 +44,13 @@
         <input type="password" class="form-control" id="cvv" placeholder="***" required>
       </div>
 
-      <button class="payButton" onclick="pay()" type="button" id="bill">Pay Now</button>    
+      <button class="payButton" onclick="pay()" type="button" id="bill">Pay Now</button>
     </form>
 
-    <button class="payButton" onclick="navigateWithTransition('history.html')" id="back">
+    <button class="payButton" onclick="navigateWithTransition('history.html')" id="historyButton">
       view transaction history
     </button> 
-    <button class="payButton" onclick="navigateWithTransition('convertion.html')" id="back">
+    <button class="payButton" onclick="navigateWithTransition('convertion.html')" id="backButton">
       back
     </button> 
   </div>

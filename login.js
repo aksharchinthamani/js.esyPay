@@ -70,7 +70,8 @@ function loginpage(){
       } 
       else{
          error.style.color = "red";
-           error.textContent = `Invalid credentials. You have left with ${turns} attempts`;
+           error.textContent = `Invalid credentials.
+            You have left with ${turns} attempts.`;
            setTimeout(() => {
            error.textContent = "";
   }, 2000);
@@ -79,7 +80,7 @@ function loginpage(){
        }
        if (count >= maxClicks) {
          button.disabled = true;
-        message.textContent = "you have exceeded the maximum number of attempts.";
+        message.textContent = "you have exceeded the maximum number of attempts.\n try after 24 hours.";
         
           //  error.style.color = "red";
           //  error.textContent = "Invalid credentials. Please try again.";
